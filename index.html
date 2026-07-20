@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Imposter Game</title>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #222;
+    color: white;
+    text-align: center;
+    padding: 30px;
+}
+button {
+    font-size: 22px;
+    padding: 15px 30px;
+    margin: 15px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+}
+input, select {
+    font-size: 20px;
+    padding: 10px;
+    width: 80%;
+    margin: 10px;
+}
+#card {
+    font-size: 34px;
+    margin: 40px;
+    min-height: 80px;
+}
+</style>
+</head>
+<body>
+
+<h1>🎭 Imposter</h1>
+
+<div id="setup">
+<p>Secret Word</p>
+<input id="word" placeholder="Enter word">
+
+<p>Who is the Imposter?</p>
+<select id="imposter">
+<option value="1">Player 1</option>
+<option value="2">Player 2</option>
+<option value="3">Player 3</option>
+<option value="4">Player 4</option>
+<option value="5">Player 5</option>
+</select>
+
+<br>
+<button onclick="startGame()">Start</button>
+</div>
+
+<div id="game" style="display:none;">
+<h2 id="playerTitle"></h2>
+
+<div id="card">
+Press Reveal
+</div>
+
+<button onclick="reveal()">Reveal</button>
+<button id="nextBtn" style="display:none;" onclick="nextPlayer()">Pass to Next Player</button>
+</div>
+
+<script>
+let currentPlayer = 1;
+let word = "";
+let imposter = 1;
+let revealed = false;
+
+function startGame(){
+    word = document.getElementById("word").value;
+    imposter = Number(document.getElementById("imposter").value);
+
+    if(word===""){
+        alert("Enter a secret word!");
+        return;
+    }
+
+    document.getElementById("setup").style.display="none";
+    document.getElementById("game").style.display="block";
+    updateScreen();
+}
+
+function updateScreen(){
+    revealed=false;
+    document.getElementById("playerTitle").innerHTML="Player "+currentPlayer;
+    document.getElementById("card").innerHTML="Press Reveal";
+    document.getElementById("nextBtn").style.display="none";
+}
+
+function reveal(){
+    if(revealed) return;
+    revealed=true;
+
+    if(currentPlayer===imposter){
+        document.getElementById("card").innerHTML="😈 YOU ARE THE IMPOSTER";
+    } else {
+        document.getElementById("card").innerHTML="🕵️ Word:<br><br><b>"+word+"</b>";
+    }
+
+    document.getElementById("nextBtn").style.display="inline-block";
+}
+
+function nextPlayer(){
+    currentPlayer++;
+
+    if(currentPlayer>5){
+        document.body.innerHTML="<h1>🎉 Everyone is Ready!</h1><h2>Start giving clues!</h2>";
+        return;
+    }
+
+    updateScreen();
+}
+</script>
+
+</body>
+</html>
